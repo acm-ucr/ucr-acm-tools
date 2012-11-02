@@ -1,0 +1,33 @@
+#!/bin/bash
+
+# This will ensure that the script exits if a failure occurs
+set -e
+
+# This will ensure the user is visually prompted upon failure
+trap "echo FAILURE: An error has occured! >&2" EXIT
+
+if [[ $# < 1 ]]
+then
+	echo "Usage: $0 FILE_TO_PRINT [DEST_PRINTER = kilo]"
+	trap - EXIT
+	exit 1
+fi
+
+if [[ $# < 2 ]]
+then
+	DEST_PRINTER=kilop
+else
+	DEST_PRINTER=$2
+fi
+
+if [ ${1: -4} == ".pdf" ]
+then
+	echo "Attempting to print PDF file... Converting to postscript first."
+	pdf2ps "$1" - | ssh bell "lpr -P $DEST_PRINTER" > /dev/null
+else
+	ssh bell "lpr -P $DEST_PRINTER" < "$1" > /dev/null
+fi
+
+# Unset the trap so we don't freak the user out by telling them an error has
+# occured when everything went fine.
+trap - EXIT
