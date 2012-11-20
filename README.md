@@ -86,4 +86,13 @@ Enough build up though, to get this working, just copy everything in the cpp_fil
 
 And that's it! Now every time you run g++ you'll actually be executing gfilt.
 
+Here's a series of commands you can paste into your terminal to accomplish the above:
+
+    git clone https://github.com/brownhead/ucr-acm-tools.git
+    cd ucr-acm-tools/cpp_filter
+    mkdir -p ~/bin
+    mv * ~/bin
+    echo 'alias g++="~/bin/gfilt -Wall"' >> ~/.bashrc
+    source ~/.bashrc
+
 Note that gfilt, by default, displays the results of your compilation through the less program (which means you can scroll up and down if you have long error messages). Hit **q** to exit the less program (you'll know what this means, if you don't already, once you compile something).
